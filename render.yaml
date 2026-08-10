@@ -1,19 +1,9 @@
 services:
   - type: web
     name: pilot-ats
-    runtime: java
+    runtime: docker
     region: oregon
     plan: free
-
-    # Render runs this from the repo root.
-    # Maven builds the JAR from the backend/ subdirectory.
-    buildCommand: cd backend && mvn clean package -DskipTests
-    startCommand: java -jar backend/target/resume-ai-0.0.1-SNAPSHOT.jar
-
-    # Environment variables — set GEMINI_API_KEY in the Render dashboard.
-    # PORT is automatically injected by Render; it does not need to be listed here.
     envVars:
       - key: GEMINI_API_KEY
-        sync: false   # Marks this as a secret — set the value in Render dashboard
-      - key: JAVA_OPTS
-        value: "-Xmx400m -Xms128m"   # Stay within free tier memory limits
+        sync: false
