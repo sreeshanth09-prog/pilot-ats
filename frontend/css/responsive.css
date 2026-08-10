@@ -1,0 +1,459 @@
+/* RESPONSIVE.CSS — Mobile-First Universal Layout
+   Breakpoints:
+     xs  : < 480px   (small phones)
+     sm  : < 576px   (phones)
+     md  : < 768px   (large phones / small tablets)
+     lg  : < 992px   (tablets / small laptops)
+     xl  : >= 992px  (desktops — base styles in style.css)
+*/
+
+/* Base: apply to all screen sizes */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Smooth scrolling on all devices */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Prevent horizontal overflow globally */
+body {
+  overflow-x: hidden;
+  word-break: break-word;
+}
+
+/* Container fluid padding */
+.container {
+  width: 100%;
+  padding-left: clamp(1rem, 4vw, 2rem);
+  padding-right: clamp(1rem, 4vw, 2rem);
+}
+
+
+/* NAVBAR */
+.navbar {
+  padding: 1rem 0;
+}
+
+.navbar-brand {
+  font-size: 1.15rem;
+}
+
+/* Hide desktop nav on mobile — it's hidden via d-none d-lg-flex already */
+
+
+/* HERO SECTION (index.html) */
+section.text-center h1 {
+  line-height: 1.15;
+}
+
+
+/* UPLOAD SECTION (index.html) */
+.upload-area {
+  padding: clamp(2rem, 6vw, 4rem) clamp(1rem, 4vw, 2rem);
+}
+
+.upload-area h3 {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+}
+
+#file-info {
+  padding: 0.85rem;
+}
+
+.file-details {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Textarea full-width */
+#job-description,
+#company-format {
+  width: 100%;
+  min-height: 100px;
+}
+
+
+/* LOADING SCREEN */
+#loading-screen {
+  padding: clamp(2rem, 6vw, 4rem) 1rem;
+}
+
+#loading-screen h3 {
+  font-size: clamp(1.1rem, 4vw, 1.5rem);
+}
+
+.loading-steps {
+  width: 100%;
+  max-width: 400px;
+  padding: 0 0.5rem;
+}
+
+.step {
+  font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+}
+
+
+/* RESULTS PAGE — Score Header */
+.score-circle {
+  width: clamp(110px, 28vw, 150px);
+  height: clamp(110px, 28vw, 150px);
+  border-width: clamp(5px, 1.5vw, 8px);
+}
+
+.score-circle .score-value {
+  font-size: clamp(2rem, 7vw, 3rem);
+}
+
+.score-circle .score-max {
+  font-size: clamp(0.75rem, 2vw, 1rem);
+}
+
+.score-status {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+}
+
+
+/* RESULTS PAGE — Score Breakdown grid */
+.quality-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
+  gap: 0.85rem;
+}
+
+.quality-item {
+  padding: 0.85rem 1rem;
+}
+
+
+/* RESULTS PAGE — Improvement cards */
+.improvement-card {
+  padding: clamp(1rem, 3vw, 1.5rem);
+  margin-bottom: 1rem;
+  overflow-wrap: break-word;
+}
+
+
+/* KEYWORD CHIPS */
+.keyword-chip {
+  font-size: clamp(0.75rem, 2vw, 0.875rem);
+  padding: 0.35rem 0.75rem;
+}
+
+
+/* BUTTONS — Results page action row */
+.d-flex.flex-wrap.gap-2 .btn {
+  flex: 1 1 auto;
+  min-width: 140px;
+  text-align: center;
+}
+
+
+/* LARGE PHONES (<=576px) */
+@media (max-width: 575.98px) {
+
+  /* Typography scale */
+  h1 { font-size: clamp(1.6rem, 7vw, 2.25rem) !important; }
+  h2 { font-size: clamp(1.3rem, 5.5vw, 1.75rem) !important; }
+  h3 { font-size: clamp(1.1rem, 4.5vw, 1.4rem) !important; }
+  h5 { font-size: 1rem !important; }
+
+  /* Navbar brand & button */
+  .navbar .btn-sm {
+    font-size: 0.78rem;
+    padding: 0.35rem 0.7rem;
+  }
+
+  /* Hero */
+  section.text-center {
+    margin-bottom: 2rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+
+  section.text-center .lead {
+    font-size: 0.95rem;
+  }
+
+  /* Upload area */
+  .upload-area {
+    padding: 2rem 1rem;
+  }
+
+  /* Analyze button — full width */
+  #analyze-btn {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  /* Loading steps */
+  .loading-steps {
+    padding: 0;
+  }
+
+  /* Score area */
+  .score-circle {
+    width: 110px;
+    height: 110px;
+    border-width: 5px;
+  }
+
+  .score-circle .score-value {
+    font-size: 2rem;
+  }
+
+  /* Download buttons stack */
+  .d-flex.flex-wrap.gap-2 {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .d-flex.flex-wrap.gap-2 .btn {
+    width: 100%;
+  }
+
+  /* Quality grid single column */
+  .quality-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Chips wrap tighter */
+  .keyword-chip {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+    margin: 0.2rem;
+  }
+
+  /* Improvement cards */
+  .improvement-card {
+    padding: 1rem;
+  }
+
+  /* How it works — stack vertically */
+  #how-it-works .col-md-3 {
+    margin-bottom: 1.25rem;
+  }
+
+  /* Results page two-col row — single col */
+  .col-lg-6 {
+    margin-bottom: 1.5rem;
+  }
+
+  /* Ordered list */
+  ol.ps-3 {
+    padding-left: 1.25rem;
+  }
+
+  /* Section spacing */
+  section.mb-5,
+  .mb-5 {
+    margin-bottom: 2rem !important;
+  }
+}
+
+
+/* TABLETS (577px – 767px) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+
+  h1 { font-size: 2rem !important; }
+  h2 { font-size: 1.6rem !important; }
+
+  section.text-center {
+    margin-bottom: 2.5rem !important;
+  }
+
+  /* Quality grid 2 columns */
+  .quality-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Download buttons side-by-side */
+  .d-flex.flex-wrap.gap-2 {
+    justify-content: center;
+  }
+
+  .d-flex.flex-wrap.gap-2 .btn {
+    min-width: 160px;
+  }
+
+  /* Two-col section stacks */
+  .col-lg-6 {
+    margin-bottom: 1.5rem;
+  }
+
+  #analyze-btn {
+    width: 100%;
+  }
+}
+
+
+/* SMALL LAPTOPS / LARGE TABLETS (768px – 991px) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+
+  h1 { font-size: 2.25rem !important; }
+
+  /* Quality grid 3 columns */
+  .quality-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Narrow the analyze form */
+  #analyze .col-lg-8 {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  /* Two-col layout on tablets */
+  .col-lg-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+    margin-bottom: 0;
+  }
+}
+
+
+/* DESKTOP (>=992px) — fine-tune only */
+@media (min-width: 992px) {
+
+  .quality-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+
+  /* Cap textarea heights */
+  #job-description {
+    min-height: 120px;
+  }
+
+  #company-format {
+    min-height: 100px;
+  }
+
+  /* Score area tweaks */
+  .score-circle {
+    width: 150px;
+    height: 150px;
+    border-width: 8px;
+  }
+
+  .score-circle .score-value {
+    font-size: 3rem;
+  }
+}
+
+
+/* TALL MOBILE PHONES (portrait, <=480px) */
+@media (max-width: 480px) {
+
+  /* Tighter vertical rhythm */
+  main.container {
+    padding-top: 1rem !important;
+  }
+
+  /* Progress bars label text */
+  .quality-item .quality-name {
+    font-size: 0.85rem;
+  }
+
+  .quality-item .quality-status {
+    font-size: 0.78rem;
+  }
+
+  /* Improvement card label */
+  .improvement-label {
+    font-size: 0.7rem;
+  }
+
+  /* HR questions, bullet improvements — comfortable reading */
+  .custom-list li {
+    font-size: 0.88rem;
+    margin-bottom: 0.6rem;
+  }
+
+  /* Spinner slightly smaller */
+  .spinner-border {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+
+  /* Step text smaller */
+  .step {
+    font-size: 0.8rem;
+    margin-bottom: 0.55rem;
+  }
+
+  /* Footer text */
+  footer small {
+    font-size: 0.72rem;
+  }
+}
+
+
+/* LANDSCAPE PHONES (short height, wide) */
+@media (max-height: 480px) and (orientation: landscape) {
+
+  .navbar {
+    padding: 0.5rem 0;
+  }
+
+  section.text-center {
+    margin-bottom: 1rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+
+  section.text-center h1 {
+    font-size: 1.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  #loading-screen {
+    padding: 1rem 0.5rem;
+  }
+
+  #loading-screen::before,
+  #loading-screen::after {
+    display: none; /* hide decorative orbs on tiny landscape */
+  }
+
+  .loading-steps {
+    margin-top: 0.75rem;
+  }
+
+  footer {
+    padding: 0.75rem 0 !important;
+  }
+}
+
+
+/* PRINT — keep it clean */
+@media print {
+
+  .navbar,
+  footer,
+  #download-pdf-btn,
+  #download-word-btn {
+    display: none !important;
+  }
+
+  body {
+    font-size: 12pt;
+    color: #000;
+  }
+
+  .score-circle {
+    border-color: #000 !important;
+  }
+
+  .improvement-card,
+  .quality-item {
+    break-inside: avoid;
+  }
+}

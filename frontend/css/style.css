@@ -1,0 +1,471 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary-color: #2563EB;
+  --primary-hover: #1D4ED8;
+  --bg-color: #FFFFFF;
+  --text-dark: #111827;
+  --text-muted: #6B7280;
+  --border-color: #E5E7EB;
+  --success-color: #10B981;
+  --warning-color: #F59E0B;
+  --danger-color: #EF4444;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-dark);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Minimal Navbar */
+.navbar {
+  padding: 1.5rem 0;
+  background-color: var(--bg-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  color: var(--text-dark);
+  font-size: 1.25rem;
+}
+
+.nav-link {
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-left: 1.5rem;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--primary-color);
+}
+
+/* Typography Overrides */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+p {
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Button Overrides */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff;
+  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  box-shadow: none !important;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+  background-color: var(--primary-hover) !important;
+  border-color: var(--primary-hover) !important;
+}
+
+.btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--border-color);
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff;
+}
+
+/* Form Controls */
+.form-control {
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  color: var(--text-dark);
+  box-shadow: none !important;
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 1px var(--primary-color) !important;
+}
+
+/* Drag and Drop Area */
+.upload-area {
+  border: 2px dashed var(--border-color);
+  border-radius: 8px;
+  padding: 4rem 2rem;
+  text-align: center;
+  transition: all 0.2s ease;
+  background-color: var(--bg-color);
+  cursor: pointer;
+}
+
+.upload-area.dragover {
+  border-color: var(--primary-color);
+  background-color: #F8FAFC;
+}
+
+.upload-area h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.upload-area p {
+  margin-bottom: 1.5rem;
+}
+
+#file-info {
+  display: none;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  text-align: left;
+}
+
+.file-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.remove-file {
+  color: var(--danger-color);
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.remove-file:hover {
+  text-decoration: underline;
+}
+
+/* Loading Screen */
+@keyframes pulse-ring {
+  0%   { transform: scale(0.92); opacity: 0.6; }
+  50%  { transform: scale(1.08); opacity: 0.2; }
+  100% { transform: scale(0.92); opacity: 0.6; }
+}
+
+@keyframes spin-smooth {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes float-orb {
+  0%, 100% { transform: translateY(0px) scale(1);   opacity: 0.15; }
+  50%       { transform: translateY(-18px) scale(1.1); opacity: 0.28; }
+}
+
+@keyframes step-slide-in {
+  from { opacity: 0; transform: translateX(-14px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes step-glow {
+  0%, 100% { text-shadow: 0 0 0px transparent; }
+  50%       { text-shadow: 0 0 10px rgba(37,99,235,0.45); }
+}
+
+@keyframes done-pop {
+  0%   { transform: scale(0.7);  opacity: 0; }
+  60%  { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+
+@keyframes shimmer-text {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+#loading-screen {
+  display: none;
+  text-align: center;
+  padding: 4rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Floating background orbs — purely decorative */
+#loading-screen::before,
+#loading-screen::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#loading-screen::before {
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(37,99,235,0.18) 0%, transparent 70%);
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: float-orb 4s ease-in-out infinite;
+}
+
+#loading-screen::after {
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(16,185,129,0.14) 0%, transparent 70%);
+  bottom: 20px;
+  right: 10%;
+  animation: float-orb 5.5s ease-in-out infinite reverse;
+}
+
+/* Shimmer heading */
+#loading-screen h3 {
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(
+    90deg,
+    var(--text-dark) 0%,
+    var(--primary-color) 40%,
+    var(--text-dark) 80%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer-text 2.8s linear infinite;
+}
+
+/* Pulsing ring behind the spinner */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  color: var(--primary-color);
+  position: relative;
+  z-index: 1;
+  animation: spin-smooth 0.8s linear infinite;
+  filter: drop-shadow(0 0 6px rgba(37,99,235,0.5));
+}
+
+/* Animated pulse ring around spinner */
+.spinner-border::after {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 3px solid rgba(37,99,235,0.25);
+  animation: pulse-ring 1.6s ease-in-out infinite;
+}
+
+.loading-steps {
+  margin-top: 2rem;
+  text-align: left;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Each step slides in on appear */
+.step {
+  margin-bottom: 0.75rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0;
+  transform: translateX(-14px);
+  animation: step-slide-in 0.45s ease forwards;
+  transition: color 0.3s ease, font-weight 0.2s ease;
+  border-radius: 6px;
+  padding: 0.35rem 0.6rem;
+}
+
+/* Stagger each step's entrance */
+.step:nth-child(1) { animation-delay: 0.0s; }
+.step:nth-child(2) { animation-delay: 0.1s; }
+.step:nth-child(3) { animation-delay: 0.2s; }
+.step:nth-child(4) { animation-delay: 0.3s; }
+.step:nth-child(5) { animation-delay: 0.4s; }
+.step:nth-child(6) { animation-delay: 0.5s; }
+
+.step.active {
+  color: var(--primary-color);
+  font-weight: 600;
+  background: rgba(37,99,235,0.06);
+  animation: step-glow 1.4s ease-in-out infinite;
+  /* keep opacity=1 once active */
+  opacity: 1;
+  transform: none;
+}
+
+/* Active step — animated leading dot */
+.step.active::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  flex-shrink: 0;
+  animation: pulse-ring 1s ease-in-out infinite;
+}
+
+.step.done {
+  color: var(--success-color);
+  opacity: 1;
+  transform: none;
+  background: rgba(16,185,129,0.06);
+}
+
+/* Checkmark pop animation when a step becomes done */
+.step.done::first-letter {
+  display: inline-block;
+  animation: done-pop 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+
+/* Results Page Styles */
+.score-circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 8px solid var(--primary-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 1.5rem;
+}
+
+.score-circle .score-value {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  line-height: 1;
+}
+
+.score-circle .score-max {
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+.score-status {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+/* Progress Bars Minimal Override */
+.progress {
+  height: 8px;
+  border-radius: 4px;
+  background-color: var(--border-color);
+  box-shadow: none;
+  overflow: visible;
+}
+
+.progress-bar {
+  background-color: var(--primary-color);
+  border-radius: 4px;
+}
+
+/* Chips */
+.keyword-chip {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: #F3F4F6;
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  color: var(--text-dark);
+  font-size: 0.875rem;
+  margin: 0.25rem;
+}
+
+.keyword-chip.missing {
+  background-color: #FEF2F2;
+  border-color: #FCA5A5;
+  color: var(--danger-color);
+}
+
+/* Custom Lists */
+.custom-list {
+  list-style: none;
+  padding: 0;
+}
+
+.custom-list li {
+  padding-left: 1.5rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.custom-list.strengths li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--success-color);
+  font-weight: bold;
+}
+
+.custom-list.weaknesses li::before {
+  content: '⚠';
+  position: absolute;
+  left: 0;
+  color: var(--warning-color);
+  font-weight: bold;
+}
+
+/* Improvement Cards */
+.improvement-card {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.improvement-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.label-current { color: var(--text-muted); }
+.label-problem { color: var(--danger-color); }
+.label-suggestion { color: var(--success-color); }
+
+.quality-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.quality-item {
+  border: 1px solid var(--border-color);
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+.quality-item .quality-name {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.quality-item .quality-status {
+  font-size: 0.875rem;
+}
+
+.status-excellent { color: var(--success-color); }
+.status-good { color: var(--primary-color); }
+.status-needs-improvement { color: var(--warning-color); }
+
+/* Helpers */
+.text-xs { font-size: 0.75rem; }
+.text-sm { font-size: 0.875rem; }
+.tracking-wide { letter-spacing: 0.025em; }

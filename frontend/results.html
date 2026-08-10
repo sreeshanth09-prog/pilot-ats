@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Analysis - Pilot</title>
+    <!-- Bootstrap CSS for minimal layout -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/responsive.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Minimal Navbar -->
+    <nav class="navbar navbar-expand-lg mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Pilot</a>
+            <div class="d-flex ms-auto">
+                <a class="btn btn-outline-primary btn-sm" href="index.html">Analyze Another Resume</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mb-5">
+        
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h1 class="mb-4">Resume Analysis</h1>
+                
+                <!-- ATS Score -->
+                <div class="score-circle">
+                    <div class="score-value" id="overall-score">--</div>
+                    <div class="score-max">/ 100</div>
+                </div>
+                <div class="score-status mb-2" id="score-status">Calculating...</div>
+                <p class="text-muted text-sm mx-auto" style="max-width: 400px;">
+                    Based on resume structure, keywords, skills, experience relevance and ATS compatibility.
+                </p>
+                <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+                    <button class="btn btn-outline-primary btn-sm" id="download-pdf-btn">Download PDF Report</button>
+                    <button class="btn btn-outline-primary btn-sm" id="download-word-btn">Download Word Report</button>
+                </div>
+                <p class="text-xs text-muted mx-auto mt-2 mb-0" style="max-width: 420px;">
+                    Automated guidance can make mistakes. Verify details responsibly before using the report.
+                </p>
+            </div>
+        </div>
+
+        <!-- Score Breakdown -->
+        <section class="mb-5">
+            <h3 class="h5 mb-4 border-bottom pb-2">Score Breakdown</h3>
+            <div class="row g-4" id="score-breakdown-container">
+                <!-- Dynamically populated by JS -->
+            </div>
+        </section>
+
+        <!-- Review Summary Banner -->
+        <div id="ai-verdict-container" class="mb-5 p-4 bg-light rounded border" style="display: none;">
+            <h3 class="h5 mb-3 text-primary">Review Summary</h3>
+            <p id="ai-verdict-text" class="mb-0 fw-medium"></p>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <!-- Strengths & Weaknesses -->
+            <div class="col-lg-6">
+                <section class="h-100">
+                    <h3 class="h5 mb-4 border-bottom pb-2">Resume Review</h3>
+                    <div class="mb-4">
+                        <h6 class="text-xs fw-bold tracking-wide text-muted mb-3">STRENGTHS</h6>
+                        <ul class="custom-list strengths" id="strengths-list">
+                            <!-- Populated by JS -->
+                        </ul>
+                    </div>
+                    <div>
+                        <h6 class="text-xs fw-bold tracking-wide text-muted mb-3">WEAKNESSES</h6>
+                        <ul class="custom-list weaknesses" id="weaknesses-list">
+                            <!-- Populated by JS -->
+                        </ul>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Semantic Matches & Missing Keywords -->
+            <div class="col-lg-6">
+                <section class="h-100">
+                    <h3 class="h5 mb-4 border-bottom pb-2">Keywords & Alignment</h3>
+                    <div class="mb-4">
+                        <h6 class="text-xs fw-bold tracking-wide text-muted mb-3">ROLE MATCHES</h6>
+                        <div id="semantic-matches-container">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                    <div>
+                        <h6 class="text-xs fw-bold tracking-wide text-muted mb-3">MISSING KEYWORDS</h6>
+                        <div id="missing-keywords-container">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Improvements -->
+        <section class="mb-5">
+            <h3 class="h5 mb-4 border-bottom pb-2">Improvements</h3>
+            <div id="improvements-container">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- Bullet Improvements -->
+        <section class="mb-5">
+            <h3 class="h5 mb-4 border-bottom pb-2">Bullet Improvements</h3>
+            <div id="bullet-improvements-container">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- Company Format Suggestions -->
+        <section class="mb-5">
+            <h3 class="h5 mb-4 border-bottom pb-2">Company Format Fit</h3>
+            <div id="format-suggestions-container">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- HR Questions -->
+        <section class="mb-5">
+            <h3 class="h5 mb-4 border-bottom pb-2">Likely HR Questions</h3>
+            <div id="hr-questions-container">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- Final Recommendations -->
+        <section class="mb-5">
+            <h3 class="h5 mb-4 border-bottom pb-2">Final Recommendations</h3>
+            <ol class="ps-3" id="final-recommendations-container">
+                <!-- Populated by JS -->
+            </ol>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-4 border-top text-center text-muted">
+        <div class="container">
+            <small>&copy; 2026 Pilot. Design and Develop by Sreeshanth.</small>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="js/app.js"></script>
+    <script src="js/results.js"></script>
+</body>
+</html>

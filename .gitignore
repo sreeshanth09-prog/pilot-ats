@@ -1,0 +1,68 @@
+# Secrets — NEVER commit API keys or .env files
+.env
+.env.*
+*.env
+application-local.properties
+application-secret.properties
+
+# Maven build output
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Maven wrapper (keep if present)
+.mvn/
+
+# Test artifacts
+test.txt
+*.tmp
+*.log
+
+# IDE — IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# IDE — Eclipse / STS
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# IDE — VS Code
+.vscode/
+
+# IDE — NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Node (if ever used)
+node_modules/
+npm-debug.log*
+
+# Java compiled class files
+*.class
+*.jar
+*.war
+*.ear
