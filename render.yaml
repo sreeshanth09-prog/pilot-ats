@@ -1,9 +1,0 @@
-services:
-  - type: web
-    name: pilot-ats
-    runtime: docker
-    region: oregon
-    plan: free
-    envVars:
-      - key: GEMINI_API_KEY
-        sync: false
