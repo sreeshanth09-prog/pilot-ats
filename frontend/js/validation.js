@@ -39,7 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Start visual loading
-        const interval = simulateLoadingVisuals();
+        loadingState.active = true;
+        simulateLoadingVisuals();
 
         try {
             const data = await fetchWithRetry(getApiUrl(), {
@@ -47,17 +48,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: formData
             });
 
-            // Store results and redirect
+            // Store results
             sessionStorage.setItem('resumeAnalysisResult', JSON.stringify(data));
 
-            // Wait for at least some visual progression
-            setTimeout(() => {
-                clearInterval(interval);
-                window.location.href = 'results.html';
-            }, 1500);
+            // Wait for final visual progression, then redirect
+            await finishLoadingVisuals();
+            window.location.href = 'results.html';
 
         } catch (error) {
-            clearInterval(interval);
+            abortLoadingVisuals();
             fileError.textContent = error.message;
             fileError.style.display = 'block';
             uploadSection.style.display = 'block';
@@ -176,32 +175,101 @@ document.addEventListener('DOMContentLoaded', () => {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    function simulateLoadingVisuals() {
-        const steps = [
+    let loadingState = {
+        active: false,
+        steps: [
             document.getElementById('step-2'),
             document.getElementById('step-3'),
             document.getElementById('step-4'),
             document.getElementById('step-5'),
             document.getElementById('step-6')
-        ];
+        ],
+        current: 0
+    };
 
-        let currentStep = 0;
-
-        return setInterval(() => {
-            if (currentStep > 0 && currentStep <= steps.length) {
-                // Mark previous as done
-                steps[currentStep - 1].classList.remove('active');
-                steps[currentStep - 1].classList.add('done');
-                steps[currentStep - 1].textContent = '✓ ' + steps[currentStep - 1].textContent.substring(2);
+    async function simulateLoadingVisuals() {
+        const timings = [700, 900, 1800, 3000]; // Realistic delays for steps 2, 3, 4, 5
+        
+        for (let i = 0; i < timings.length; i++) {
+            if (!loadingState.active) return;
+            
+            // Mark previous as done
+            if (i > 0) {
+                const prev = loadingState.steps[i - 1];
+                if (prev) {
+                    prev.classList.remove('active');
+                    prev.classList.add('done');
+                    prev.textContent = '✓ ' + prev.textContent.substring(2);
+                }
             }
-
-            if (currentStep < steps.length) {
-                // Set current to active
-                steps[currentStep].classList.add('active');
+            
+            // Set current to active
+            const currentStep = loadingState.steps[i];
+            if (currentStep) {
+                currentStep.classList.add('active');
+                loadingState.current = i;
             }
+            
+            await delay(timings[i]);
+        }
+    }
 
-            if (currentStep < steps.length) currentStep++;
-        }, 800);
+    function finishLoadingVisuals() {
+        if (!loadingState.active) return Promise.resolve();
+        
+        // Mark whatever is currently active as done
+        const curr = loadingState.steps[loadingState.current];
+        if (curr) {
+            curr.classList.remove('active');
+            curr.classList.add('done');
+            if (curr.textContent.startsWith('→ ')) {
+                curr.textContent = '✓ ' + curr.textContent.substring(2);
+            }
+        }
+        
+        // Ensure all steps up to 4 are marked done (in case fetch was super fast)
+        for (let i = 0; i <= 3; i++) {
+            const step = loadingState.steps[i];
+            if (step && !step.classList.contains('done')) {
+                step.classList.remove('active');
+                step.classList.add('done');
+                if (step.textContent.startsWith('→ ')) {
+                    step.textContent = '✓ ' + step.textContent.substring(2);
+                }
+            }
+        }
+        
+        // Set final step active, then done
+        const finalStep = loadingState.steps[4];
+        if (finalStep) {
+            finalStep.classList.add('active');
+        }
+        
+        return new Promise(resolve => {
+            setTimeout(() => {
+                if (finalStep) {
+                    finalStep.classList.remove('active');
+                    finalStep.classList.add('done');
+                    if (finalStep.textContent.startsWith('→ ')) {
+                        finalStep.textContent = '✓ ' + finalStep.textContent.substring(2);
+                    }
+                }
+                setTimeout(resolve, 400); // Wait a tiny bit before redirecting
+            }, 600);
+        });
+    }
+
+    function abortLoadingVisuals() {
+        loadingState.active = false;
+        loadingState.steps.forEach(s => {
+            if (s) {
+                s.classList.remove('active', 'done');
+                if (s.textContent.startsWith('✓ ')) {
+                    s.textContent = '→ ' + s.textContent.substring(2);
+                }
+            }
+        });
+        loadingState.current = 0;
     }
 
     function getApiUrl() {
