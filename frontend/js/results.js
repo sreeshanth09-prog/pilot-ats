@@ -280,15 +280,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (pdfButton) {
             pdfButton.addEventListener('click', async () => {
-                await downloadReport('/api/resume/report/pdf', 'resume-ats-report.pdf', 'application/pdf');
+                await handleDownload(pdfButton, '/api/resume/report/pdf', 'resume-ats-report.pdf', 'application/pdf', 'PDF');
             });
         }
 
         if (wordButton) {
             wordButton.addEventListener('click', async () => {
-                await downloadReport('/api/resume/report/word', 'resume-ats-report.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+                await handleDownload(wordButton, '/api/resume/report/word', 'resume-ats-report.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'Word');
             });
         }
+    }
+
+    async function handleDownload(btn, path, fileName, mimeType, label) {
+        const originalText = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = `Generating ${label}…`;
+
+        try {
+            await downloadReport(path, fileName, mimeType);
+        } catch (err) {
+            showDownloadError(`Could not generate ${label} report. Please try again.`);
+        } finally {
+            btn.disabled = false;
+            btn.textContent = originalText;
+        }
+    }
+
+    function showDownloadError(msg) {
+        // Reuse or create a small error banner near the download buttons
+        let banner = document.getElementById('download-error-msg');
+        if (!banner) {
+            banner = document.createElement('p');
+            banner.id = 'download-error-msg';
+            banner.style.cssText = 'color:#EF4444;font-size:0.85rem;margin-top:0.5rem;text-align:center;';
+            const btnRow = document.querySelector('.d-flex.flex-wrap.justify-content-center.gap-2');
+            if (btnRow) btnRow.insertAdjacentElement('afterend', banner);
+        }
+        banner.textContent = msg;
+        setTimeout(() => { banner.textContent = ''; }, 5000);
     }
 
     async function downloadReport(path, fileName, mimeType) {
@@ -310,19 +339,32 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.location.protocol === 'file:') {
             return `http://localhost:8080${path}`;
         }
-
-        return path;
+        // Always use the full Railway URL — frontend is on Vercel (different origin)
+        return `https://pilot-ats-production-1859.up.railway.app${path}`;
     }
 
     function downloadBlob(blob, fileName, mimeType) {
         const typedBlob = blob.type ? blob : new Blob([blob], { type: mimeType });
         const url = URL.createObjectURL(typedBlob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        URL.revokeObjectURL(url);
+
+        // iOS Safari silently ignores programmatic link.click() for downloads.
+        // Android Chrome supports it but benefits from the same approach.
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+        if (isMobile) {
+            // Open blob URL in the same tab — browser will prompt Save / Share sheet
+            window.location.href = url;
+            // Delay revoke so the browser has time to start the download
+            setTimeout(() => URL.revokeObjectURL(url), 5000);
+        } else {
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            // Small delay before revoke so the download starts cleanly
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
     }
 });
