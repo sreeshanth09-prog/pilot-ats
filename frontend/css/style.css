@@ -61,13 +61,19 @@ p {
   border-radius: 6px;
   padding: 0.75rem 1.5rem;
   font-weight: 500;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
   box-shadow: none !important;
+  touch-action: manipulation;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
   background-color: var(--primary-hover) !important;
   border-color: var(--primary-hover) !important;
+}
+
+.btn-primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 .btn-outline-primary {
@@ -151,39 +157,43 @@ p {
 
 /* Loading Screen */
 @keyframes pulse-ring {
-  0%   { transform: scale(0.92); opacity: 0.6; }
-  50%  { transform: scale(1.08); opacity: 0.2; }
-  100% { transform: scale(0.92); opacity: 0.6; }
+  0%   { transform: scale(0.92) translateZ(0); opacity: 0.6; }
+  50%  { transform: scale(1.08) translateZ(0); opacity: 0.2; }
+  100% { transform: scale(0.92) translateZ(0); opacity: 0.6; }
 }
 
 @keyframes spin-smooth {
-  to { transform: rotate(360deg); }
+  to { transform: rotate(360deg) translateZ(0); }
 }
 
 @keyframes float-orb {
-  0%, 100% { transform: translateY(0px) scale(1);   opacity: 0.15; }
-  50%       { transform: translateY(-18px) scale(1.1); opacity: 0.28; }
+  0%, 100% { transform: translateY(0px) scale(1) translateZ(0);    opacity: 0.15; }
+  50%       { transform: translateY(-18px) scale(1.1) translateZ(0); opacity: 0.28; }
 }
 
 @keyframes step-slide-in {
-  from { opacity: 0; transform: translateX(-14px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from { opacity: 0; transform: translateX(-14px) translateZ(0); }
+  to   { opacity: 1; transform: translateX(0)      translateZ(0); }
 }
 
 @keyframes step-glow {
   0%, 100% { text-shadow: 0 0 0px transparent; }
-  50%       { text-shadow: 0 0 10px rgba(37,99,235,0.45); }
+  50%       { text-shadow: 0 0 10px rgba(37,99,235,0.40); }
 }
 
 @keyframes done-pop {
-  0%   { transform: scale(0.7);  opacity: 0; }
-  60%  { transform: scale(1.15); opacity: 1; }
-  100% { transform: scale(1);    opacity: 1; }
+  0%   { transform: scale(0.7)  translateZ(0); opacity: 0; }
+  60%  { transform: scale(1.15) translateZ(0); opacity: 1; }
+  100% { transform: scale(1)    translateZ(0); opacity: 1; }
 }
 
 @keyframes shimmer-text {
   0%   { background-position: -200% center; }
   100% { background-position:  200% center; }
+}
+
+#upload-section {
+  transition: opacity 0.25s ease;
 }
 
 #loading-screen {
@@ -192,6 +202,13 @@ p {
   padding: 4rem 0;
   position: relative;
   overflow: hidden;
+  /* Fade-in when shown via JS */
+  animation: fadeInScreen 0.3s ease forwards;
+}
+
+@keyframes fadeInScreen {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* Floating background orbs — purely decorative */
@@ -212,6 +229,7 @@ p {
   left: 50%;
   transform: translateX(-50%);
   animation: float-orb 4s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 #loading-screen::after {
@@ -221,6 +239,7 @@ p {
   bottom: 20px;
   right: 10%;
   animation: float-orb 5.5s ease-in-out infinite reverse;
+  will-change: transform, opacity;
 }
 
 /* Shimmer heading */
@@ -237,7 +256,8 @@ p {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shimmer-text 2.8s linear infinite;
+  animation: shimmer-text 2.8s ease-in-out infinite;
+  will-change: background-position;
 }
 
 /* Pulsing ring behind the spinner */
@@ -248,7 +268,18 @@ p {
   position: relative;
   z-index: 1;
   animation: spin-smooth 0.8s linear infinite;
-  filter: drop-shadow(0 0 6px rgba(37,99,235,0.5));
+  /* Use box-shadow instead of drop-shadow filter — composites on GPU */
+  will-change: transform;
+}
+
+/* Soft glow via a composited pseudo-element (no per-frame filter repaint) */
+.spinner-border::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  box-shadow: 0 0 14px 4px rgba(37,99,235,0.35);
+  pointer-events: none;
 }
 
 /* Animated pulse ring around spinner */
@@ -259,6 +290,7 @@ p {
   border-radius: 50%;
   border: 3px solid rgba(37,99,235,0.25);
   animation: pulse-ring 1.6s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 .loading-steps {
@@ -279,11 +311,13 @@ p {
   align-items: center;
   gap: 0.5rem;
   opacity: 0;
-  transform: translateX(-14px);
-  animation: step-slide-in 0.45s ease forwards;
-  transition: color 0.3s ease, font-weight 0.2s ease;
+  transform: translateX(-14px) translateZ(0);
+  /* Spring-like entrance easing */
+  animation: step-slide-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transition: color 0.3s ease, font-weight 0.2s ease, background 0.2s ease;
   border-radius: 6px;
   padding: 0.35rem 0.6rem;
+  will-change: transform, opacity;
 }
 
 /* Stagger each step's entrance */
@@ -301,7 +335,7 @@ p {
   animation: step-glow 1.4s ease-in-out infinite;
   /* keep opacity=1 once active */
   opacity: 1;
-  transform: none;
+  transform: translateZ(0);
 }
 
 /* Active step — animated leading dot */
@@ -314,6 +348,7 @@ p {
   background: var(--primary-color);
   flex-shrink: 0;
   animation: pulse-ring 1s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 .step.done {

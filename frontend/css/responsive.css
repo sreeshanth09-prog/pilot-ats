@@ -49,7 +49,14 @@ body {
   font-size: 1.15rem;
 }
 
-/* Hide desktop nav on mobile — it's hidden via d-none d-lg-flex already */
+/* Ensure navbar links have comfortable tap targets on touch devices */
+.nav-link {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
 
 
 /* HERO SECTION (index.html) */
@@ -60,7 +67,7 @@ section.text-center h1 {
 
 /* UPLOAD SECTION (index.html) */
 .upload-area {
-  padding: clamp(2rem, 6vw, 4rem) clamp(1rem, 4vw, 2rem);
+  padding: clamp(1.5rem, 5vw, 4rem) clamp(0.75rem, 4vw, 2rem);
 }
 
 .upload-area h3 {
@@ -74,13 +81,23 @@ section.text-center h1 {
 .file-details {
   flex-wrap: wrap;
   gap: 0.5rem;
+  min-width: 0; /* prevent flex overflow */
 }
 
-/* Textarea full-width */
+#file-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: calc(100% - 80px);
+  display: block;
+}
+
+/* Textarea full-width with vertical resize only */
 #job-description,
 #company-format {
   width: 100%;
   min-height: 100px;
+  resize: vertical;
 }
 
 
@@ -95,8 +112,10 @@ section.text-center h1 {
 
 .loading-steps {
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
   padding: 0 0.5rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .step {
@@ -150,8 +169,25 @@ section.text-center h1 {
   padding: 0.35rem 0.75rem;
 }
 
+/* Chip containers wrap cleanly */
+#semantic-matches-container,
+#missing-keywords-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
 
-/* BUTTONS — Results page action row */
+
+/* BUTTONS — mobile analyze button always full-width */
+@media (max-width: 767.98px) {
+  #analyze-btn {
+    width: 100%;
+    font-size: 1rem;
+    min-height: 48px; /* comfortable touch target */
+  }
+}
+
+/* Results page action row */
 .d-flex.flex-wrap.gap-2 .btn {
   flex: 1 1 auto;
   min-width: 140px;
@@ -184,20 +220,15 @@ section.text-center h1 {
     font-size: 0.95rem;
   }
 
-  /* Upload area */
+  /* Upload area tighter on small phones */
   .upload-area {
-    padding: 2rem 1rem;
+    padding: 1.5rem 0.85rem;
   }
 
-  /* Analyze button — full width */
-  #analyze-btn {
-    width: 100%;
-    font-size: 1rem;
-  }
-
-  /* Loading steps */
+  /* Loading steps full-width */
   .loading-steps {
     padding: 0;
+    max-width: 100%;
   }
 
   /* Score area */
@@ -230,7 +261,7 @@ section.text-center h1 {
   .keyword-chip {
     padding: 0.3rem 0.6rem;
     font-size: 0.75rem;
-    margin: 0.2rem;
+    margin: 0.15rem;
   }
 
   /* Improvement cards */
@@ -356,6 +387,17 @@ section.text-center h1 {
   /* Tighter vertical rhythm */
   main.container {
     padding-top: 1rem !important;
+  }
+
+  /* Upload area very tight */
+  .upload-area {
+    padding: 1.25rem 0.75rem;
+  }
+
+  /* File name truncation on tiny screens */
+  #file-name {
+    max-width: calc(100% - 72px);
+    font-size: 0.85rem;
   }
 
   /* Progress bars label text */
