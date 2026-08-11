@@ -109,6 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return 'http://localhost:8080/api/resume/analyze';
         }
 
-        return '/api/resume/analyze';
+        return 'https://pilot-ats-production-1859.up.railway.app/api/resume/analyze';
     }
 });
