@@ -61,6 +61,11 @@ Pilot is a full-stack Resume Analyzer that combines a **deterministic Java ATS s
 
 ---
 
+## Recent Updates
+
+- **RAG-based Resume Analysis:** Uploaded resumes are now vectorized and stored in a local JSON vector store using Gemini's `text-embedding-004` model. This enables Retrieval-Augmented Generation (RAG) for more context-aware analysis and semantic search across parsed resumes.
+- **Premium Glassmorphism UI:** Completely redesigned the frontend with a modern, premium "glassmorphism" aesthetic featuring dynamic mesh background gradients, frosted glass containers, and improved typography (Outfit + Inter).
+
 ## Features
 
 | Feature | Details |
