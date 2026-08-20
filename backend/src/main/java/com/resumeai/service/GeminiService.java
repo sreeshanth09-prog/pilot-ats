@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,8 @@ public class GeminiService {
 
     @Value("${gemini.api.url}")
     private String apiUrl;
+
+    private final String embeddingApiUrl = "https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent";
 
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -104,6 +107,7 @@ public class GeminiService {
         return body;
     }
 
+    @SuppressWarnings("unchecked")
     private GeminiResponseDto parseResponse(Map<String, Object> apiResponse) {
         try {
             List<Map<String, Object>> candidates = (List<Map<String, Object>>) apiResponse.get("candidates");
@@ -128,6 +132,39 @@ public class GeminiService {
         } catch (Exception e) {
             System.err.println("Failed to parse Gemini JSON: " + e.getMessage());
             return null;
+        }
+    }
+    public List<Double> getEmbedding(String text) {
+        if (apiKey == null || apiKey.equals("missing_key") || apiKey.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        try {
+            Map<String, Object> content = new HashMap<>();
+            Map<String, Object> parts = new HashMap<>();
+            parts.put("text", text);
+            content.put("parts", List.of(parts));
+
+            Map<String, Object> requestBody = new HashMap<>();
+            requestBody.put("content", content);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("x-goog-api-key", apiKey);
+
+            HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
+            Map<String, Object> response = restTemplate.postForObject(embeddingApiUrl, request, Map.class);
+
+            if (response != null && response.containsKey("embedding")) {
+                Map<String, Object> embeddingNode = (Map<String, Object>) response.get("embedding");
+                if (embeddingNode != null && embeddingNode.containsKey("values")) {
+                    return (List<Double>) embeddingNode.get("values");
+                }
+            }
+            return Collections.emptyList();
+        } catch (Exception e) {
+            System.err.println("Gemini Embedding API Error: " + e.getMessage());
+            return Collections.emptyList();
         }
     }
 }

@@ -88,6 +88,7 @@ public class ReportExportService {
         footerRun.setColor("6B7280");
     }
 
+    @SuppressWarnings("deprecation")
     private void addSection(XWPFDocument document, ReportSection section) {
         XWPFParagraph heading = document.createParagraph();
         heading.setSpacingBefore(280);
@@ -119,6 +120,7 @@ public class ReportExportService {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void addParagraph(XWPFDocument document, String text, boolean bold, String color, int size) {
         XWPFParagraph paragraph = document.createParagraph();
         paragraph.setSpacingAfter(80);
