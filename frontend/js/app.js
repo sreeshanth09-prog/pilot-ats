@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setupCharacterCounter('job-description', 'char-count');
     setupCharacterCounter('company-format', 'format-char-count');
+
 });
 
 function setupCharacterCounter(textareaId, counterId) {
