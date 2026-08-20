@@ -2,7 +2,7 @@
 
 <img src="frontend/favicon.png" alt="Pilot Logo" width="120" />
 
-# Pilot — AI-Powered ATS Resume Analyzer
+# Pilot — AI & RAG-Powered ATS Resume Analyzer
 
 **Analyze your resume against any job description, score it with a real ATS engine, and get AI-driven feedback — completely free, no account required.**
 
