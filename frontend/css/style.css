@@ -364,3 +364,69 @@ h1, h2, h3, h4, h5, h6, .navbar-brand {
 
 /* Typography Utility */
 .text-xs { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+
+/* --- Smooth User Experience Animations --- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.improvement-card, .quality-item, #ai-verdict-container, .score-circle {
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.quality-item:nth-child(1) { animation-delay: 0.05s; }
+.quality-item:nth-child(2) { animation-delay: 0.1s; }
+.quality-item:nth-child(3) { animation-delay: 0.15s; }
+.quality-item:nth-child(4) { animation-delay: 0.2s; }
+.improvement-card:nth-child(1) { animation-delay: 0.25s; }
+.improvement-card:nth-child(2) { animation-delay: 0.3s; }
+.improvement-card:nth-child(3) { animation-delay: 0.35s; }
+
+/* --- Mobile Responsiveness Enhancements --- */
+@media (max-width: 768px) {
+  /* Navbar tweaks */
+  .navbar .btn-sm {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
+  .navbar-brand {
+    font-size: 1.25rem;
+  }
+  /* Typography */
+  h1 { font-size: 2rem !important; }
+  h2 { font-size: 1.5rem !important; }
+  
+  /* Upload Area */
+  .upload-area {
+    padding: 2.5rem 1rem;
+    border-radius: 16px;
+  }
+  
+  /* Score display */
+  .score-circle {
+    width: 140px !important;
+    height: 140px !important;
+    margin-bottom: 1.5rem;
+  }
+  .score-circle .score-value {
+    font-size: 3rem !important;
+  }
+  .score-circle .score-max {
+    font-size: 0.85rem !important;
+  }
+  
+  /* Glassmorphism Cards padding reduction */
+  .improvement-card, .quality-item, #ai-verdict-container {
+    padding: 1.25rem;
+    border-radius: 12px;
+  }
+  
+  /* Touch target size improvements */
+  .btn {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
